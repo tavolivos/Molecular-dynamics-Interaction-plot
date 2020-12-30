@@ -12,5 +12,5 @@ How the script works:
 * Data is concatenated and sorted for appropriate plotting.
 
 Requirements:
-- PLIP software
+- PLIP software.
 - Python modules: Numpy, Pandas, CSV, matplotlib.
