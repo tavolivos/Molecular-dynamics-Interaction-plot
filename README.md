@@ -12,5 +12,5 @@ PLIP analysis is performed to determine the type of interactions for each frame.
 Data is concatenated and sorted for appropriate plotting.
 
 Requirement:
--PLIP software
--Python modules: Numpy,Pandas,CSV, matplotlib.
+- PLIP software
+- Python modules: Numpy,Pandas,CSV, matplotlib.
