@@ -13,4 +13,4 @@ Data is concatenated and sorted for appropriate plotting.
 
 Requirement:
 - PLIP software
-- Python modules: Numpy,Pandas,CSV, matplotlib.
+- Python modules: Numpy, Pandas, CSV, matplotlib.
