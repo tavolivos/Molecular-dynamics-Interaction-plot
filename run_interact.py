@@ -429,13 +429,6 @@ with open('pi_cation.csv', 'w') as fout:
 
 os.remove("out.csv")
 
-import numpy as np
-import pandas as pd
-import csv
-import matplotlib.pyplot as plt
-from matplotlib import rc,rcParams
-from pylab import *
-
 df = pd.read_csv('h_bond.csv')
 x1 = df.res
 y1 = df.N
