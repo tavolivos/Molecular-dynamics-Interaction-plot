@@ -10,3 +10,7 @@ How the script works:
 The analysis is based on a *.pdb file that contains "n" number of frames from a MD.
 PLIP analysis is performed to determine the type of interactions for each frame.
 Data is concatenated and sorted for appropriate plotting.
+
+Requirement:
+- PLIP software
+-Python modules: Numpy,Pandas,CSV, matplotlib.
