@@ -13,7 +13,7 @@ How the script works:
 
 Requirements:
 - PLIP software.
-- Python modules: os, Numpy, Pandas, CSV, matplotlib.
+- Python modules: os, Numpy, Pandas, CSV, matplotlib, pylab.
 
 Bonus:
 * A tcl command line (get_pdb_frames.tcl) to get frames from MD trajectories using tk console in VMD.
