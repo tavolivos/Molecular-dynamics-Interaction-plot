@@ -13,7 +13,7 @@ How the script works:
 
 Requirements:
 - PLIP software.
-- Python modules: Numpy, Pandas, CSV, matplotlib.
+- Python modules: os, Numpy, Pandas, CSV, matplotlib.
 
 Important:
 The code is freely distributed without any warranty.
