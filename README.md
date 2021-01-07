@@ -15,5 +15,9 @@ Requirements:
 - PLIP software.
 - Python modules: os, Numpy, Pandas, CSV, matplotlib.
 
+Bonus:
+* A tcl command line (get_pdb_frames.tcl) to get frames from MD trajectories using tk console in VMD.
+* It only runs in tk console.
+
 Important:
 The code is freely distributed without any warranty.
