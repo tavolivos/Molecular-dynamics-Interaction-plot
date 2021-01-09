@@ -22,6 +22,7 @@ done
 for d in */; do
         cd ${d}
         sed -n -e '/($ligand_code) - SMALLMOLECULE/,/SMALLMOLECULE/p' *.txt > all_interact.dat
+	sed -i '/(HSD)/,/EOF/d' report.txt
 	if [ -f all_interact.dat ];
 	then
 	cat *.txt >> all_interact.dat;
@@ -83,10 +84,15 @@ sed -e 's/$/ pC/' -i pi_cation.dat
 cat *dat >> all_interactions.dat
 sort -o all_interactions.dat all_interactions.dat
 uniq all_interactions.dat -c > unique_interactions.csv
+sed -i 's/          //g' unique_interactions.csv
+sed -i 's/         //g' unique_interactions.csv
+sed -i 's/        //g' unique_interactions.csv
+sed -i 's/       //g' unique_interactions.csv
 sed -i 's/      //g' unique_interactions.csv
 sed -i 's/     //g' unique_interactions.csv
 sed -i 's/    //g' unique_interactions.csv
 sed -i 's/   //g' unique_interactions.csv
+sed -i 's/  //g' unique_interactions.csv
 sed -i 's/ /,/g' unique_interactions.csv
 sort -t , -k 2 -g -o unique_interactions.csv unique_interactions.csv
 sed -i '1 i\N,res,type' unique_interactions.csv
