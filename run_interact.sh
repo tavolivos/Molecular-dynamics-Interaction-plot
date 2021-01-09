@@ -16,7 +16,7 @@ for file in model_*; do
 done
 for d in model_*; do
 	cd ${d}
-	plip -f model*.pdb -t -yv
+	plip -f model*.pdb -t -v
 	cd ../;
 done
 for d in */; do
