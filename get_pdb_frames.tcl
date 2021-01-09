@@ -1,3 +1,9 @@
+###################################
+#  By: Gustavo E. Olivos-Ramirez  #
+#      gustavo.olivos@upch.pe     #
+#      Lima-Peru                  #
+###################################
+
 mol new md_0_10.gro
 animate delete  beg 0 end 0
 mol addfile {005_PS-002.xtc} type {xtc} first 0 last 9999 step 10
