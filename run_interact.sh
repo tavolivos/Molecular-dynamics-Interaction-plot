@@ -8,6 +8,7 @@ ligand_code=UNL
 pdb=md_400_last.pdb
 i=1
 while read line; do
+	echo "$i"
 	echo "${line}" >> model_${i}.pdb 
 	[[ ${line[0]} == END ]] && ((i++)) 
 done < $pdb
@@ -16,10 +17,12 @@ for file in model_*; do
 done
 for d in model_*; do
 	cd ${d}
-	plip -f model*.pdb -t -v
+	plip -f model*.pdb -t -v -q -s
 	cd ../;
 done
+k=1
 for d in */; do
+	echo "$k"
         cd ${d}
         sed -n -e '/($ligand_code) - SMALLMOLECULE/,/SMALLMOLECULE/p' *.txt > all_interact.dat
 	sed -i '/(HSD)/,/EOF/d' report.txt
@@ -66,14 +69,14 @@ for d in */; do
         sed -i 's/RESNR-RESTYPE//' pi_cation.dat
         grep -v "\*" pi_cation.dat > temp && mv temp pi_cation.dat
         sed '/^$/d' pi_cation.dat > temp && mv temp pi_cation.dat
-        cd ../;
+        cd ../
+	((k++));
 done
-for d in */; do
-        cat ${d%/}/h_bond.dat >> h_bond.dat
-        cat ${d%/}/hydrophobic.dat >> hydrophobic.dat
-        cat ${d%/}/salt_bridges.dat >> salt_bridges.dat
-        cat ${d%/}/pi_stacking.dat >> pi_stacking.dat
-        cat ${d%/}/pi_cation.dat >> pi_cation.dat;
+cat */h_bond.dat >> h_bond.dat
+cat */hydrophobic.dat >> hydrophobic.dat
+cat */salt_bridges.dat >> salt_bridges.dat
+cat */pi_stacking.dat >> pi_stacking.dat
+cat */pi_cation.dat >> pi_cation.dat;
 done
 # INTERACTION CODES: HB=h-bond; H=hydrophobic; SB=sald bridge; pS=pi-stacking; pC=pi-cation
 sed -e 's/$/ HB/' -i h_bond.dat
