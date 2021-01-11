@@ -77,7 +77,6 @@ cat */hydrophobic.dat >> hydrophobic.dat
 cat */salt_bridges.dat >> salt_bridges.dat
 cat */pi_stacking.dat >> pi_stacking.dat
 cat */pi_cation.dat >> pi_cation.dat;
-done
 # INTERACTION CODES: HB=h-bond; H=hydrophobic; SB=sald bridge; pS=pi-stacking; pC=pi-cation
 sed -e 's/$/ HB/' -i h_bond.dat
 sed -e 's/$/ H/' -i hydrophobic.dat
