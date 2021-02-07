@@ -4,22 +4,26 @@
 #      Lima-Peru                  #
 ###################################
 
-ligand_code=UNL
-pdb=md_400_last.pdb
+ligand_code=UNK
+pdb=all_traj.pdb
 i=1
 while read line; do
 	echo "$i"
-	echo "${line}" >> model_${i}.pdb 
-	[[ ${line[0]} == END ]] && ((i++)) 
+	echo "${line}" >> model_${i}.pdb
+	[[ ${line[0]} == ENDMDL ]] && ((i++))
 done < $pdb
 for file in model_*; do
+	sed -i '1,5d' ${file}
 	mkdir ${file%.pdb} && mv ${file} ${file%.pdb};
 done
 for d in model_*; do
 	cd ${d}
-	plip -f model*.pdb -t -v -q -s
+	plip -f model_* -t -q -s
 	cd ../;
 done
+rm */*proton*
+rm */*fixed*
+
 k=1
 for d in */; do
 	echo "$k"
@@ -27,48 +31,39 @@ for d in */; do
         sed -n -e '/($ligand_code) - SMALLMOLECULE/,/SMALLMOLECULE/p' *.txt > all_interact.dat
 	sed -i '/(HSD)/,/EOF/d' report.txt
 	if [ -f all_interact.dat ];
-	then
-	cat *.txt >> all_interact.dat;
+		then
+		cat *.txt >> all_interact.dat;
 	fi
-	sed -i '$ d' all_interact.dat
 	echo "**" >> all_interact.dat
         sed -i -z 's/+//g; s/-//g; s/=//g; s/|//g; s/*\*\n/\n/g' all_interact.dat
-        awk '{print $1,$2}' all_interact.dat > res_interact.dat
+	awk '{print $1,$2}' all_interact.dat > res_interact.dat
+	sed -i '/^ $/d' res_interact.dat
+	rm all_interact.dat
 #Hydrophobic
         sed -n -e '/Hydrophobic Interactions/,/*/p' res_interact.dat > hydrophobic.dat
         sed -i 's/ /-/g' hydrophobic.dat
-        sed -i -z 's/\n\-//g' hydrophobic.dat
-        sed -i 's/RESNR-RESTYPE//' hydrophobic.dat
-        grep -v "\*" hydrophobic.dat > temp && mv temp hydrophobic.dat
-        sed '/^$/d' hydrophobic.dat > temp && mv temp hydrophobic.dat
+	sed -i '/*/d' hydrophobic.dat
+        sed -i '1d' hydrophobic.dat
 #H-bond
-        sed -n -e '/Hydrogen Bonds/,/*/p' res_interact.dat > h_bond.dat
-        sed -i 's/ /-/g' h_bond.dat
-        sed -i -z 's/\n\-//g' h_bond.dat
-        sed -i 's/RESNR-RESTYPE//' h_bond.dat
-        grep -v "\*" h_bond.dat > temp && mv temp h_bond.dat
-        sed '/^$/d' h_bond.dat > temp && mv temp h_bond.dat
+    	sed -n -e '/Hydrogen Bonds/,/*/p' res_interact.dat > h_bond.dat
+	sed -i 's/ /-/g' h_bond.dat
+	sed -i '/*/d' h_bond.dat
+        sed -i '1d' h_bond.dat 
 #Salt-bridges
         sed -n -e '/Salt Bridges/,/*/p' res_interact.dat > salt_bridges.dat
-        sed -i 's/ /-/g' salt_bridges.dat
-        sed -i -z 's/\n\-//g' salt_bridges.dat
-        sed -i 's/RESNR-RESTYPE//' salt_bridges.dat
-        grep -v "\*" salt_bridges.dat > temp && mv temp salt_bridges.dat
-        sed '/^$/d' salt_bridges.dat > temp && mv temp salt_bridges.dat
+	sed -i 's/ /-/g' salt_bridges.dat
+	sed -i '/*/d' salt_bridges.dat
+        sed -i '1d' salt_bridges.dat
 #pi-Stacking
         sed -n -e '/piStacking/,/*/p' res_interact.dat > pi_stacking.dat
-        sed -i 's/ /-/g' pi_stacking.dat
-        sed -i -z 's/\n\-//g' pi_stacking.dat
-        sed -i 's/RESNR-RESTYPE//' pi_stacking.dat
-        grep -v "\*" pi_stacking.dat > temp && mv temp pi_stacking.dat
-        sed '/^$/d' pi_stacking.dat > temp && mv temp pi_stacking.dat
+	sed -i 's/ /-/g' pi_stacking.dat
+	sed -i '/*/d' pi_stacking.dat
+        sed -i '1d' pi_stacking.dat
 #pi-Cation
         sed -n -e '/piCation/,/*/p' res_interact.dat > pi_cation.dat
-        sed -i 's/ /-/g' pi_cation.dat
-        sed -i -z 's/\n\-//g' pi_cation.dat
-        sed -i 's/RESNR-RESTYPE//' pi_cation.dat
-        grep -v "\*" pi_cation.dat > temp && mv temp pi_cation.dat
-        sed '/^$/d' pi_cation.dat > temp && mv temp pi_cation.dat
+	sed -i 's/ /-/g' pi_cation.dat
+	sed -i '/*/d' pi_cation.dat
+        sed -i '1d' pi_cation.dat
         cd ../
 	((k++));
 done
@@ -76,7 +71,7 @@ cat */h_bond.dat >> h_bond.dat
 cat */hydrophobic.dat >> hydrophobic.dat
 cat */salt_bridges.dat >> salt_bridges.dat
 cat */pi_stacking.dat >> pi_stacking.dat
-cat */pi_cation.dat >> pi_cation.dat;
+cat */pi_cation.dat >> pi_cation.dat
 # INTERACTION CODES: HB=h-bond; H=hydrophobic; SB=sald bridge; pS=pi-stacking; pC=pi-cation
 sed -e 's/$/ HB/' -i h_bond.dat
 sed -e 's/$/ H/' -i hydrophobic.dat
@@ -85,19 +80,18 @@ sed -e 's/$/ pS/' -i pi_stacking.dat
 sed -e 's/$/ pC/' -i pi_cation.dat
 cat *dat >> all_interactions.dat
 sort -o all_interactions.dat all_interactions.dat
-uniq all_interactions.dat -c > unique_interactions.csv
-sed -i 's/          //g' unique_interactions.csv
-sed -i 's/         //g' unique_interactions.csv
-sed -i 's/        //g' unique_interactions.csv
-sed -i 's/       //g' unique_interactions.csv
-sed -i 's/      //g' unique_interactions.csv
-sed -i 's/     //g' unique_interactions.csv
-sed -i 's/    //g' unique_interactions.csv
-sed -i 's/   //g' unique_interactions.csv
-sed -i 's/  //g' unique_interactions.csv
-sed -i 's/ /,/g' unique_interactions.csv
-sort -t , -k 2 -g -o unique_interactions.csv unique_interactions.csv
-sed -i '1 i\N,res,type' unique_interactions.csv
+uniq all_interactions.dat -c > unique.csv
+sed -i 's/          //g' unique.csv
+sed -i 's/         //g' unique.csv
+sed -i 's/        //g' unique.csv
+sed -i 's/       //g' unique.csv
+sed -i 's/      //g' unique.csv
+sed -i 's/     //g' unique.csv
+sed -i 's/    //g' unique.csv
+sed -i 's/   //g' unique.csv
+sed -i 's/  //g' unique.csv
+sed -i 's/ /,/g' unique.csv
+sort -t , -k 2 -g -o unique.csv unique.csv
+sed -i '1 i\N,res,type' unique.csv
 mkdir plip_results
-mv model*/ plip_results
-rm *.dat
+mv model_* plip_results
