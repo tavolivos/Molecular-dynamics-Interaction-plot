@@ -16,7 +16,7 @@ Requirements:
 - Python modules: os, Numpy, Pandas, CSV, matplotlib, pylab.
 
 Bonus:
-* A tcl-script (get_pdb_frames.tcl) to get frames from MD trajectories using the tk console in VMD.
+* A tcl-script (get_pdb_frames.tcl) to get frames from MD trajectories using VMD.
 
 Important:
 The code is freely distributed without any warranty.
