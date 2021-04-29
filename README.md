@@ -17,7 +17,6 @@ Requirements:
 
 Bonus:
 * A tcl command line (get_pdb_frames.tcl) to get frames from MD trajectories using the tk console in VMD.
-* It only runs in tk console with command line.
 
 Important:
 The code is freely distributed without any warranty.
