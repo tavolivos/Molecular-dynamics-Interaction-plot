@@ -8,7 +8,9 @@ How to use:
 
 How the script works:
 * The analysis is based on a *.pdb file that contains "n" number of frames from a MD.
+* The frames are split into individual *.pdb files. 
 * PLIP analysis is performed to determine the type of interactions for each frame.
+* The molecular interactions are sorted in different files .
 * Data is concatenated and sorted for appropriate plotting.
 
 Requirements:
