@@ -22,3 +22,5 @@ Bonus:
 
 Important:
 The code is freely distributed without any warranty.
+
+[![DOI](https://zenodo.org/badge/325608484.svg)](https://zenodo.org/badge/latestdoi/325608484)
